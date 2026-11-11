@@ -33,6 +33,7 @@ class _MyAppState extends State<MyApp> {
     final rawData = await rootBundle.loadString(file);
     _localization = jsonDecode(file);
   }
+  Future<void> changeLanguage()async{}
 
   @override
   Widget build(BuildContext context) {
@@ -82,6 +83,33 @@ class _MyAppState extends State<MyApp> {
               child: Text('فارسی'),
             ),
           ],
+        ),
+        drawer: Drawer(
+          child: Column(
+            children: [
+              DrawerHeader(child: Text(_localization["appbar_title"])),
+              ListTile(
+                leading: Icon(Icons.home),
+                title: Text(_localization['home']),
+              ),
+              ListTile(
+                leading: Icon(Icons.note_alt_outlined),
+                title: Text(_localization['add_note']),
+              ),
+              ListTile(
+                leading: Icon(Icons.settings),
+                title: Text(_localization['settings']),
+              ),
+              ListTile(
+                leading: Icon(Icons.language),
+                title: Text(
+                  _locale.languageCode == 'en' ? "فارسی " : "English",)
+                  onTap: (){
+
+                  },
+              ),
+            ],
+          ),
         ),
         body: Center(child: Text(_localization['title'])),
       ),
