@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:js_interop';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:newforflutter/homePage.dart';
 
 void main() {
@@ -32,31 +34,53 @@ class _MyAppState extends State<MyApp> {
     _localization = jsonDecode(file);
   }
 
-  Future<void> changeLanguage(String newLagnuage) async {
-    final file = newLagnuage == 'en'
-        ? "assets/l10n/en.json"
-        : "assets/l10n/fa.json";
-    final rawData = await rootBundle.loadString(file);
-    setState(() {
-      _localization = jsonDecode(rawData);
-      _locale = Locale(newLagnuage);
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       locale: _locale,
       supportedLocales: [Locale('en'), Locale('fa')],
       debugShowCheckedModeBanner: false,
+      builder: (context, child) {
+        return Directionality(
+          textDirection: _locale.languageCode == 'en'
+              ? TextDirection.ltr
+              : TextDirection.rtl,
+          child: child!,
+        );
+      },
       home: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.amber.shade800,
           foregroundColor: Colors.white,
           title: Text(_localization['appbar_title']),
           actions: [
-            MaterialButton(onPressed: () {}, child: Text('English')),
-            MaterialButton(onPressed: () {}, child: Text('فارسی')),
+            MaterialButton(
+              onPressed: () async {
+                final file = "assets/l10n/en.json";
+                final rawData = await rootBundle.loadString(file);
+                setState(() {
+                  _localization = jsonDecode(rawData);
+                  _locale = Locale('en');
+                });
+              },
+              child: Text('English'),
+            ),
+            MaterialButton(
+              onPressed: () async {
+                final file = "assets/l10n/fa.json";
+                final rawData = await rootBundle.loadString(file);
+                setState(() {
+                  _localization = jsonDecode(rawData);
+                  _locale = Locale('fa');
+                });
+              },
+              child: Text('فارسی'),
+            ),
           ],
         ),
         body: Center(child: Text(_localization['title'])),

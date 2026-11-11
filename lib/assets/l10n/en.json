@@ -1,4 +1,7 @@
 {
     "appbar_title":"Note Pad",
-    "title":"Hi from en laguage"    
+    "title":"Hi from en laguage"  ,
+    "home"  :"Home",
+    "settings":"Settings",
+    "add_note":"New Note" 
 }
