@@ -33,7 +33,8 @@ class _MyAppState extends State<MyApp> {
     final rawData = await rootBundle.loadString(file);
     _localization = jsonDecode(file);
   }
-  Future<void> changeLanguage()async{}
+
+  Future<void> changeLanguage(String newLanguage) async {}
 
   @override
   Widget build(BuildContext context) {
@@ -103,15 +104,18 @@ class _MyAppState extends State<MyApp> {
               ListTile(
                 leading: Icon(Icons.language),
                 title: Text(
-                  _locale.languageCode == 'en' ? "فارسی " : "English",)
-                  onTap: (){
-
-                  },
+                  _locale.languageCode == "en" ? "فارسی " : "English",
+                ),
+                onTap: () {
+                  changeLanguage(_locale.languageCode == "en" ? "fa" : "en");
+                  Navigator.pop(context);
+                },
               ),
             ],
           ),
         ),
         body: Center(child: Text(_localization['title'])),
+        floatingActionButton: FloatingActionButton(onPressed: () {}),
       ),
     );
   }
